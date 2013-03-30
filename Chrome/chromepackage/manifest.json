@@ -1,0 +1,9 @@
+{
+  "name": "ohmd",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "oculus rift head-mounted display integration",
+
+	"plugins": [
+    { "path": "npohmd.dll", "public": true }
+  ]
+}
