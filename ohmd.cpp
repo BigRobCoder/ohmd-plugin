@@ -7,9 +7,15 @@
 
 \**********************************************************/
 
-#include "ohmdAPI.h"
+#include <OVR.h>
 
+#include "ohmdAPI.h"
 #include "ohmd.h"
+
+OVR::Ptr<OVR::DeviceManager> ohmd::pManager;
+OVR::Ptr<OVR::HMDDevice>     ohmd::pHMD;
+OVR::Ptr<OVR::SensorDevice>  ohmd::pSensor;
+OVR::SensorFusion            ohmd::SFusion;
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn ohmd::StaticInitialize()
@@ -22,6 +28,21 @@ void ohmd::StaticInitialize()
 {
     // Place one-time initialization stuff here; As of FireBreath 1.4 this should only
     // be called once per process
+
+	// init ovr
+	using namespace OVR;
+	System::Init(Log::ConfigureDefaultLog(LogMask_All));
+	pManager = *DeviceManager::Create();
+	pHMD     = *pManager->EnumerateDevices<HMDDevice>().CreateDevice();
+	if (!pHMD)
+        return;
+
+	// setup sensor
+	pSensor  = *pHMD->GetSensor();
+	if (pSensor) {
+		// pSensor->SetRange(SensorRange(4 * 9.81f, 8 * Math<float>::Pi, 1.0f), true); :TODO: needed?
+		SFusion.AttachToSensor(pSensor);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -35,6 +56,11 @@ void ohmd::StaticDeinitialize()
 {
     // Place one-time deinitialization stuff here. As of FireBreath 1.4 this should
     // always be called just before the plugin library is unloaded
+
+	pSensor.Clear();
+    pHMD.Clear();
+    pManager.Clear();
+	OVR::System::Destroy();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

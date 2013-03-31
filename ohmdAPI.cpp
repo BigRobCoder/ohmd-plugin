@@ -9,22 +9,9 @@
 #include "DOM/Document.h"
 #include "global/config.h"
 
+#include <OVR.h>
+
 #include "ohmdAPI.h"
-
-///////////////////////////////////////////////////////////////////////////////
-/// @fn FB::variant ohmdAPI::echo(const FB::variant& msg)
-///
-/// @brief  Echos whatever is passed from Javascript.
-///         Go ahead and change it. See what happens!
-///////////////////////////////////////////////////////////////////////////////
-FB::variant ohmdAPI::echo(const FB::variant& msg)
-{
-    static int n(0);
-    fire_echo("So far, you clicked this many times: ", n++);
-
-    // return "foobar";
-    return msg;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn ohmdPtr ohmdAPI::getPlugin()
@@ -43,24 +30,75 @@ ohmdPtr ohmdAPI::getPlugin()
     return plugin;
 }
 
-// Read/Write property testString
-std::string ohmdAPI::get_testString()
-{
-    return m_testString;
-}
-
-void ohmdAPI::set_testString(const std::string& val)
-{
-    m_testString = val;
-}
-
-// Read-only property version
 std::string ohmdAPI::get_version()
 {
     return FBSTRING_PLUGIN_VERSION;
 }
 
-void ohmdAPI::testEvent()
+FB::VariantMap ohmdAPI::get_deviceInfo()
 {
-    fire_test();
+	FB::VariantMap hmdMap;
+	ohmdPtr plugin = getPlugin();
+	if (!plugin->pHMD) {
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "HMD Device not found";
+	} else {
+		OVR::HMDInfo hmdInfo;
+		plugin->pHMD->GetDeviceInfo(&hmdInfo);
+		FB::VariantList DistortionK;
+		DistortionK.push_back(hmdInfo.DistortionK[0]);
+		DistortionK.push_back(hmdInfo.DistortionK[1]);
+		DistortionK.push_back(hmdInfo.DistortionK[2]);
+		DistortionK.push_back(hmdInfo.DistortionK[3]);
+		hmdMap["error"]                  = false;
+		hmdMap["displayDeviceName"]      = hmdInfo.DisplayDeviceName;
+		hmdMap["interpupillaryDistance"] = hmdInfo.InterpupillaryDistance;
+		hmdMap["distortionK"]            = DistortionK;
+	}
+	return hmdMap;
+}
+
+FB::VariantMap ohmdAPI::get_orientation()
+{
+	FB::VariantMap hmdMap;
+	ohmdPtr plugin = getPlugin();
+	if (!plugin->pHMD || !plugin->pSensor){
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "HMD Device not found";
+	} else {
+		// :TODO:
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "Property not yet implemented";
+	}
+	return hmdMap;
+}
+
+FB::VariantMap ohmdAPI::get_acceleration()
+{
+	FB::VariantMap hmdMap;
+	ohmdPtr plugin = getPlugin();
+	if (!plugin->pHMD || !plugin->pSensor){
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "HMD Device not found";
+	} else {
+		// :TODO:
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "Property not yet implemented";
+	}
+	return hmdMap;
+}
+
+FB::VariantMap ohmdAPI::get_angularVelocity()
+{
+	FB::VariantMap hmdMap;
+	ohmdPtr plugin = getPlugin();
+	if (!plugin->pHMD || !plugin->pSensor){
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "HMD Device not found";
+	} else {
+		// :TODO:
+		hmdMap["error"]   = true;
+		hmdMap["message"] = "Property not yet implemented";
+	}
+	return hmdMap;
 }

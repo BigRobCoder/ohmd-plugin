@@ -39,7 +39,7 @@ set(MOZILLA_PLUGINID "grimwire.com/ohmd")
 # strings
 set(FBSTRING_CompanyName "grimwire")
 set(FBSTRING_PluginDescription "oculus rift head-mounted display integration")
-set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
+set(FBSTRING_PLUGIN_VERSION "1.0.0.1")
 set(FBSTRING_LegalCopyright "Copyright 2013 grimwire")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
 set(FBSTRING_ProductName "ohmd")

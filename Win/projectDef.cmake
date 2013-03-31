@@ -49,6 +49,15 @@ target_link_libraries(${PROJECT_NAME}
     ${PLUGIN_INTERNAL_DEPS}
     )
 
+# LibOVR deps
+find_library(winmm Winmm)
+target_link_libraries(${PROJECT_NAME} winmm)
+#add_library(winmm.lib STATIC IMPORTED)
+set (LIBOVER_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Win/LibOVR)
+include_directories(${LIBOVER_PATH}/Include)
+target_link_libraries(${PROJECT_NAME} debug "${LIBOVER_PATH}/Lib/Win32/libovrd.lib")
+target_link_libraries(${PROJECT_NAME} optimized "${LIBOVER_PATH}/Lib/Win32/libovr.lib")
+
 set(WIX_HEAT_FLAGS
     -gg                 # Generate GUIDs
     -srd                # Suppress Root Dir

@@ -31,19 +31,13 @@ public:
     ohmdAPI(const ohmdPtr& plugin, const FB::BrowserHostPtr& host) :
         m_plugin(plugin), m_host(host)
     {
-        registerMethod("echo",      make_method(this, &ohmdAPI::echo));
-        registerMethod("testEvent", make_method(this, &ohmdAPI::testEvent));
+        //registerMethod("echo",      make_method(this, &ohmdAPI::echo));
         
-        // Read-write property
-        registerProperty("testString",
-                         make_property(this,
-                                       &ohmdAPI::get_testString,
-                                       &ohmdAPI::set_testString));
-        
-        // Read-only property
-        registerProperty("version",
-                         make_property(this,
-                                       &ohmdAPI::get_version));
+        registerProperty("version", make_property(this, &ohmdAPI::get_version));
+        registerProperty("deviceInfo", make_property(this, &ohmdAPI::get_deviceInfo));
+        registerProperty("orientation", make_property(this, &ohmdAPI::get_orientation));
+        registerProperty("acceleration", make_property(this, &ohmdAPI::get_acceleration));
+        registerProperty("angularVelocity", make_property(this, &ohmdAPI::get_angularVelocity));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -57,28 +51,21 @@ public:
 
     ohmdPtr getPlugin();
 
-    // Read/Write property ${PROPERTY.ident}
-    std::string get_testString();
-    void set_testString(const std::string& val);
-
-    // Read-only property ${PROPERTY.ident}
+	// exported API
     std::string get_version();
-
-    // Method echo
-    FB::variant echo(const FB::variant& msg);
+    FB::VariantMap get_deviceInfo();
+    FB::VariantMap get_orientation();
+    FB::VariantMap get_acceleration();
+    FB::VariantMap get_angularVelocity();
+    //FB::variant echo(const FB::variant& msg);
     
     // Event helpers
-    FB_JSAPI_EVENT(test, 0, ());
-    FB_JSAPI_EVENT(echo, 2, (const FB::variant&, const int));
-
-    // Method test-event
-    void testEvent();
+    //FB_JSAPI_EVENT(test, 0, ());
+    //FB_JSAPI_EVENT(echo, 2, (const FB::variant&, const int));
 
 private:
     ohmdWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
-
-    std::string m_testString;
 };
 
 #endif // H_ohmdAPI

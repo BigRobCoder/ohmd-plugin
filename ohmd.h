@@ -9,6 +9,8 @@
 #ifndef H_ohmdPLUGIN
 #define H_ohmdPLUGIN
 
+#include <OVR.h>
+
 #include "PluginWindow.h"
 #include "PluginEvents/MouseEvents.h"
 #include "PluginEvents/AttachedEvent.h"
@@ -19,6 +21,12 @@
 FB_FORWARD_PTR(ohmd)
 class ohmd : public FB::PluginCore
 {
+public:
+	static OVR::Ptr<OVR::DeviceManager> pManager;
+    static OVR::Ptr<OVR::HMDDevice>     pHMD;
+    static OVR::Ptr<OVR::SensorDevice>  pSensor;
+	static OVR::SensorFusion            SFusion;
+
 public:
     static void StaticInitialize();
     static void StaticDeinitialize();
@@ -38,10 +46,10 @@ public:
     virtual bool isWindowless() { return false; }
 
     BEGIN_PLUGIN_EVENT_MAP()
-        EVENTTYPE_CASE(FB::MouseDownEvent, onMouseDown, FB::PluginWindow)
-        EVENTTYPE_CASE(FB::MouseUpEvent, onMouseUp, FB::PluginWindow)
-        EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
-        EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
+        //EVENTTYPE_CASE(FB::MouseDownEvent, onMouseDown, FB::PluginWindow)
+        //EVENTTYPE_CASE(FB::MouseUpEvent, onMouseUp, FB::PluginWindow)
+        //EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
+        //EVENTTYPE_CASE(FB::MouseMoveEvent, onMouseMove, FB::PluginWindow)
         EVENTTYPE_CASE(FB::AttachedEvent, onWindowAttached, FB::PluginWindow)
         EVENTTYPE_CASE(FB::DetachedEvent, onWindowDetached, FB::PluginWindow)
     END_PLUGIN_EVENT_MAP()
