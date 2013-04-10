@@ -1,0 +1,32 @@
+<!--
+    Auto-generated test-site
+-->
+<html>
+<head>
+<title>test page for object fbcontrol</title>
+</head>
+    <script type="text/javascript">
+	var plugin;
+        function deviceInfo()
+        {
+	    if (!plugin) {
+		plugin = document.getElementById('plugin0');
+	    }
+            console.log(plugin.deviceInfo);
+        }
+	function orientation()
+	{
+	    if (!plugin) {
+		plugin = document.getElementById('plugin0');
+	    }
+	    console.log(plugin.orientation);
+	}
+    </script>
+<body>
+<object id="plugin0" type="application/x-grimwire-ohmd" width="300" height="300">
+</object><br />
+    
+<a href="#" onclick="javascript:deviceInfo()">device info</a> <br />
+<a href="#" onclick="javascript:orientation()">orientation</a> <br />
+</body>
+</html>
