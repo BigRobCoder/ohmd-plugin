@@ -66,9 +66,15 @@ FB::VariantMap ohmdAPI::get_orientation()
 		hmdMap["error"]   = true;
 		hmdMap["message"] = "HMD Device not found";
 	} else {
-		// :TODO:
-		hmdMap["error"]   = true;
-		hmdMap["message"] = "Property not yet implemented";
+		OVR::Quatf hmdOrient = plugin->SFusion.GetOrientation();
+		float yaw=0.0f, pitch=0.0f, roll=0.0f;
+		hmdOrient.GetEulerAngles<OVR::Axis_Y, OVR::Axis_X, OVR::Axis_Z>(&yaw, &pitch, &roll);
+		FB::VariantList OrientationK;
+		OrientationK.push_back(yaw);
+		OrientationK.push_back(pitch);
+		OrientationK.push_back(roll);
+		hmdMap["error"]       = false;
+		hmdMap["orientation"] = OrientationK;
 	}
 	return hmdMap;
 }
